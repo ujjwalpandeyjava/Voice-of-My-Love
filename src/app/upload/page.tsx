@@ -14,7 +14,6 @@ export default function UploadPage() {
   const form = useForm({
     initialValues: {
       title: "",
-      description: "",
       file: null as File | null,
       thumbnail: null as File | null,
     },
@@ -31,8 +30,6 @@ export default function UploadPage() {
 
     const formData = new FormData();
     formData.append("title", values.title);
-    formData.append("description", values.description);
-    // TypeScript knows these are Files because of our validation
     formData.append("file", values.file as File);
     formData.append("thumbnail", values.thumbnail as File);
 
@@ -56,8 +53,7 @@ export default function UploadPage() {
   return (
     <form onSubmit={form.onSubmit(handleUpload)}>
       <Stack>
-        <TextInput label="Track Title" placeholder="Enter the title of the music" disabled={uploading} withAsterisk  {...form.getInputProps("title")} />
-        <Textarea label="Description" placeholder="Enter a short description or love message" disabled={uploading}  {...form.getInputProps("description")} />
+        <TextInput label="Track Title" placeholder="Enter the title of the music" disabled={uploading} withAsterisk  {...form.getInputProps("title")} maxLength={30} />
         <FileInput leftSection={<TbMusicShare />} placeholder="Pick music file" label="Upload your music file" accept="audio/*" clearable disabled={uploading} withAsterisk  {...form.getInputProps("file")} />
         <FileInput leftSection={<MdOutlineImage />} placeholder="Pick thumbnail image" label="Upload a thumbnail image" accept="image/*" clearable disabled={uploading} withAsterisk  {...form.getInputProps("thumbnail")} />
 

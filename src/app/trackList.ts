@@ -2,6 +2,11 @@ import { Track } from '@/interfaces/ourInterfaces';
 
 export const trackList: Track[] = [
 	{
+		musicFile: "./assets/A-On the mark love-voice.mp3",
+		thumbnail: "",
+		title: "Beginning"
+	},
+	{
 		musicFile: "./assets/Audio 2025-04-18 at 22.07.07_c74ae8fe.mp3",
 		thumbnail: "./assets/tn/IMG_20250621_120727.jpg",
 		title: "Sanjali from: 2025-04-18 at 22.07"

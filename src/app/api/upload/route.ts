@@ -8,15 +8,16 @@ import { join } from "path";
 export async function POST(request: NextRequest) {
 	try {
 		const formData = await request.formData();
+		const title = formData.get("title") as string;
 		const file = formData.get("file") as File | null;
 		const thumbnail = formData.get("thumbnail") as File | null;
 
-		if (!file) {
+		if (!title)
+			return NextResponse.json({ error: "No title provided." }, { status: 400 });
+		if (!file)
 			return NextResponse.json({ error: "No music file uploaded." }, { status: 400 });
-		}
-		if (!thumbnail) {
+		if (!thumbnail)
 			return NextResponse.json({ error: "No thumbnail uploaded." }, { status: 400 });
-		}
 
 		const timestamp = Date.now();
 
@@ -60,18 +61,14 @@ export async function GET() {
 	try {
 		const files = await readdir(uploadDir);
 		// Pair music files with their thumbnails
-		const musicFiles = files.filter((name) =>
-			[".mp3", ".wav", ".m4a", ".flac", ".ogg"].includes(extname(name).toLowerCase()) && !name.includes("tn.")
-		);
-		const tracks = musicFiles.map((musicName) => {
-			const base = musicName.replace(/\.[^.]+$/, ''); // remove extension
-			const thumbnail = files.find(
-				(f) => f.startsWith(base) && f.includes("tn.") // assumes 'tn' before file ext in thumbnail
-			);
+		const musicFiles = files.filter(name => [".mp3", ".wav", ".m4a", ".flac", ".ogg"].includes(extname(name).toLowerCase()) && !name.includes("tn."));
+		const tracks = musicFiles.map(eachMusicFile => {
+			const base = eachMusicFile.replace(/\.[^.]+$/, ''); // remove extension
+			const thumbnail = files.find((f) => f.startsWith(base) && f.includes("tn."));	// assumes 'tn' before file ext in thumbnail
 			return {
-				musicFile: `/api/files/uploads/${musicName}`,
-				thumbnail: thumbnail ? `/api/files/uploads/${thumbnail}` : null,
-				title: musicName.replace(/-\d+/, "").replace(/\.[^.]+$/, ''), // remove timestamp and extension
+				title: eachMusicFile.replace(/-\d+/, "").replace(/\.[^.]+$/, ''), // remove timestamp and extension
+				musicFile: `/api/files/uploads/${eachMusicFile}`,
+				thumbnail: thumbnail ? `/api/files/uploads/${thumbnail}` : null
 			};
 		});
 		return NextResponse.json(tracks);
