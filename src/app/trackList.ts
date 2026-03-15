@@ -106,13 +106,13 @@ export const trackList: Track[] = [
 	{
 		index: 17,
 		musicFile: "./assets/Audio 2026-02-17 at 7.27.07 PM.mpeg",
-		thumbnail: "./assets/tn/img017.jpg",
+		thumbnail: "./assets/tn/img011.jpg",
 		title: "Sanjali from: 2026-02-17 at 7.27 1"
 	},
 	{
 		index: 18,
 		musicFile: "./assets/Audio 2026-02-17 at 7.27.08 PM.mpeg",
-		thumbnail: "./assets/tn/img018.jpg",
+		thumbnail: "./assets/tn/img014.jpg",
 		title: "Sanjali from: 2026-02-17 at 7.27 2"
 	}
 ]

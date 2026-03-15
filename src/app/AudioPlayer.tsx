@@ -1,7 +1,7 @@
 "use client";
 
 import { Track } from "@/interfaces/ourInterfaces";
-import { Button, Card, CardSection, Center, Flex, Group, Image, Modal, Progress, Stack, Text, Title } from '@mantine/core';
+import { Button, Card, CardSection, Center, Flex, Group, Image, Modal, Slider, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useRef, useState } from "react";
 import { CiPause1, CiPlay1 } from "react-icons/ci";
@@ -66,7 +66,6 @@ const AudioPlayer = () => {
 		}
 	};
 
-
 	// Function to handle time update of the track
 	const handleTimeUpdate = () => {
 		if (audioRef.current && audioRef.current.duration) {
@@ -88,9 +87,6 @@ const AudioPlayer = () => {
 		}
 	};
 
-
-
-
 	// Function to format time in minutes and seconds
 	const formatTime = (time: number) => {
 		const minutes = Math.floor(time / 60);
@@ -107,7 +103,7 @@ const AudioPlayer = () => {
 		}
 	}, [currentTrackIndex, tracks]);
 
-	// NEW: Function to generate the SVG paths dynamically based on progress
+	// Function to generate the SVG paths dynamically based on progress
 	const renderWaveform = () => {
 		const circleCount = 16;
 		const radius = 90;
@@ -125,7 +121,15 @@ const AudioPlayer = () => {
 		});
 	};
 
-
+	const handleSliderSeek = (value: number) => {
+		if (audioRef.current && duration) {
+			// Convert percentage (0-100) to actual seconds
+			const newTime = (value / 100) * duration;
+			audioRef.current.currentTime = newTime;
+			setCurrentTime(newTime);
+			setProgress(value);
+		}
+	};
 	// Don't render player UI if tracks have not yet loaded
 	if (tracks.length === 0) {
 		return (
@@ -134,10 +138,8 @@ const AudioPlayer = () => {
 			</Flex>
 		);
 	}
-
 	return (
 		<>
-
 			{/* The Modal for Full Screen Viewing */}
 			<Modal opened={opened} onClose={close} withCloseButton={false}
 				centered size="auto" overlayProps={{ backgroundOpacity: 0.55, blur: 15 }}
@@ -197,7 +199,23 @@ const AudioPlayer = () => {
 							</Stack>
 
 							<Stack gap={2} w="100%">
-								<Progress value={progress} size="md" />
+								<Stack gap={2} w="100%">
+									<Slider value={progress} onChange={handleSliderSeek} label={null} size="md" radius="xl" thumbSize={18}
+										styles={{
+											root: { cursor: 'pointer' },
+											track: { backgroundColor: 'rgba(255, 255, 255, 0.2)' },
+											bar: {
+												background: 'linear-gradient(90deg, #ff6b9d, #ff1744, #ff6b9d)',
+												backgroundSize: '200% 100%',
+												animation: 'shimmer 2s linear infinite'
+											},
+											thumb: {
+												backgroundColor: '#fff',
+												border: 'none',
+												boxShadow: '0 0 10px rgba(255, 107, 157, 0.8)'
+											}
+										}} />
+								</Stack>
 								<Group justify="space-between" gap="xs">
 									<Text size="xs" c="rgba(255,255,255,0.8)">{formatTime(currentTime)}</Text>
 									<Text size="xs" c="rgba(255,255,255,0.8)">{formatTime(duration)}</Text>
