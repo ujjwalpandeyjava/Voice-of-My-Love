@@ -37,6 +37,15 @@ body {
 	align-items: stretch;
 }
 
+.byUjjwal {
+	position: fixed;
+	bottom: 24px;
+	left: 24px;
+	z-index: 1000;
+	color: pink !important;
+	font-size: italic;
+}
+
 .uploadBtn {
 	/* Positioning */
 	position: fixed;
