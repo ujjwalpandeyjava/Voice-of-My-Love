@@ -1,13 +1,15 @@
 "use client";
 
 import { Track } from "@/interfaces/ourInterfaces";
-import { Button, Card, CardSection, Center, Flex, Group, Image, Progress, Stack, Text, Title } from '@mantine/core';
+import { Button, Card, CardSection, Center, Flex, Group, Image, Modal, Progress, Stack, Text, Title } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import { useEffect, useRef, useState } from "react";
 import { CiPause1, CiPlay1 } from "react-icons/ci";
 import { FaForward } from 'react-icons/fa';
 import { IoMdMusicalNotes } from "react-icons/io";
 import { MdOutlineFastRewind } from "react-icons/md";
 import { trackList } from './trackList';
+
 
 const AudioPlayer = () => {
 	const [tracks, setTracks] = useState<Track[]>([]);
@@ -18,6 +20,8 @@ const AudioPlayer = () => {
 	const [duration, setDuration] = useState<number>(0); // State to manage the duration of the track
 	const audioRef = useRef<HTMLAudioElement | null>(null); // Ref to manage the audio element
 
+	// Image in Full view
+	const [opened, { open, close }] = useDisclosure(false);
 
 	useEffect(() => {
 		setTracks(trackList);
@@ -146,79 +150,113 @@ const AudioPlayer = () => {
 	}
 
 	return (
-		<Flex direction="column" align="center" justify="center" h="100vh" w="100%">
-			<Card className="love-card" p="xl">
-				<CardSection>
-					<Flex direction="column" align="center" gap="lg" p="lg">
+		<>
 
-						<div className="heart-animation">
-							<svg viewBox="0 0 100 100">
-								<defs>
-									<linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-										<stop offset="0%" style={{ stopColor: "#ff6b9d", stopOpacity: 1 }} />
-										<stop offset="50%" style={{ stopColor: "#ff1744", stopOpacity: 1 }} />
-										<stop offset="100%" style={{ stopColor: "#ff6b9d", stopOpacity: 1 }} />
-									</linearGradient>
-								</defs>
-								<path fill="url(#heartGradient)" d="M50,85 C50,85 15,60 15,40 C15,25 25,15 35,15 C42,15 47,20 50,25 C53,20 58,15 65,15 C75,15 85,25 85,40 C85,60 50,85 50,85 Z" />
-							</svg>
-						</div>
+			{/* The Modal for Full Screen Viewing */}
+			<Modal
+				opened={opened}
+				onClose={close}
+				withCloseButton={false}
+				centered
+				size="auto"
+				overlayProps={{
+					backgroundOpacity: 0.55,
+					blur: 15, /* Heavy blur to match the romantic glass theme */
+				}}
+				styles={{
+					content: { backgroundColor: 'transparent', boxShadow: 'none' }
+				}}
+			>
+				{tracks[currentTrackIndex].thumbnail ? (
+					<Image
+						src={tracks[currentTrackIndex].thumbnail}
+						alt="Full Screen Cover"
+						radius="xl"
+						style={{ maxHeight: '85vh', maxWidth: '90vw', objectFit: 'contain', boxShadow: '0 0 50px rgba(255, 107, 157, 0.5)' }}
+					/>
+				) : (
+					<Center>
+						<IoMdMusicalNotes size="15em" color="white" style={{ filter: 'drop-shadow(0 0 20px rgba(255,107,157,0.8))' }} />
+					</Center>
+				)}
+			</Modal>
+			<Flex direction="column" align="center" justify="center" h="100vh" w="100%">
+				<Card className="love-card" p="xl">
+					<CardSection>
+						<Flex direction="column" align="center" gap="lg" p="lg">
 
-						<Title order={1} className="love-title" mb="sm">LOVE MESSAGE</Title>
+							<div className="heart-animation">
+								<svg viewBox="0 0 100 100">
+									<defs>
+										<linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+											<stop offset="0%" style={{ stopColor: "#ff6b9d", stopOpacity: 1 }} />
+											<stop offset="50%" style={{ stopColor: "#ff1744", stopOpacity: 1 }} />
+											<stop offset="100%" style={{ stopColor: "#ff6b9d", stopOpacity: 1 }} />
+										</linearGradient>
+									</defs>
+									<path fill="url(#heartGradient)" d="M50,85 C50,85 15,60 15,40 C15,25 25,15 35,15 C42,15 47,20 50,25 C53,20 58,15 65,15 C75,15 85,25 85,40 C85,60 50,85 50,85 Z" />
+								</svg>
+							</div>
 
-						{/* NEW: Circular Waveform & Center Image */}
-						<div className="waveform-container">
-							<svg className="circular-waveform" viewBox="0 0 200 200">
-								<defs>
-									<linearGradient id="waveGradient">
-										<stop offset="0%" style={{ stopColor: "#ff6b9d", stopOpacity: 1 }} />
-										<stop offset="100%" style={{ stopColor: "#ff1744", stopOpacity: 1 }} />
-									</linearGradient>
-								</defs>
-								<g id="waveCircles">{renderWaveform()}</g>
-							</svg>
+							<Title order={1} className="love-title" mb="sm">LOVE MESSAGE</Title>
 
-							{/* The Album Image inside the waveform */}
-							<div className="center-image-container">
-								<div className="center-image-inner">
-									{tracks[currentTrackIndex].thumbnail ? <Image src={tracks[currentTrackIndex].thumbnail} alt="Album Cover" w={150} h={150} fit="cover" /> :
-										<Center w={150} h={150} bg="rgba(255,255,255,0.1)"><IoMdMusicalNotes size="3em" color="white" /></Center>}
+							{/* NEW: Circular Waveform & Center Image */}
+							<div className="waveform-container">
+								<svg className="circular-waveform" viewBox="0 0 200 200">
+									<defs>
+										<linearGradient id="waveGradient">
+											<stop offset="0%" style={{ stopColor: "#ff6b9d", stopOpacity: 1 }} />
+											<stop offset="100%" style={{ stopColor: "#ff1744", stopOpacity: 1 }} />
+										</linearGradient>
+									</defs>
+									<g id="waveCircles">{renderWaveform()}</g>
+								</svg>
+
+								{/* The Album Image inside the waveform */}
+								<div className="center-image-container">
+									<div className="center-image-inner" onClick={open}>
+										{tracks[currentTrackIndex].thumbnail ?
+											<Image src={tracks[currentTrackIndex].thumbnail} alt="Album Cover" w={150} h={150} fit="cover" /> :
+											<Center w={150} h={150} bg="rgba(255,255,255,0.1)">
+												<IoMdMusicalNotes size="3em" color="white" />
+											</Center>}
+									</div>
 								</div>
 							</div>
-						</div>
 
-						<Stack gap={2} align="center">
-							<Title order={2} size="h3" c="white" fw={400}>{tracks[currentTrackIndex]?.title.replace(/-\d+$/, "") || "Audio Title"}</Title>
-							<Text c="rgba(255,255,255,0.7)" size="md" fs="italic">From My Heart to Yours</Text>
-						</Stack>
+							<Stack gap={2} align="center">
+								<Title order={2} size="h3" c="white" fw={400}>{tracks[currentTrackIndex]?.title.replace(/-\d+$/, "") || "Audio Title"}</Title>
+								<Text c="rgba(255,255,255,0.7)" size="md" fs="italic">From My Heart to Yours</Text>
+							</Stack>
 
-						<Stack gap={2} w="100%">
-							<Progress value={progress} size="md" />
-							<Group justify="space-between" gap="xs">
-								<Text size="xs" c="rgba(255,255,255,0.8)">{formatTime(currentTime)}</Text>
-								<Text size="xs" c="rgba(255,255,255,0.8)">{formatTime(duration)}</Text>
+							<Stack gap={2} w="100%">
+								<Progress value={progress} size="md" />
+								<Group justify="space-between" gap="xs">
+									<Text size="xs" c="rgba(255,255,255,0.8)">{formatTime(currentTime)}</Text>
+									<Text size="xs" c="rgba(255,255,255,0.8)">{formatTime(duration)}</Text>
+								</Group>
+							</Stack>
+
+							<Group gap="xl" mt="sm">
+								<Button className="love-btn love-btn-side" onClick={handlePrevTrack}>
+									<MdOutlineFastRewind size={20} />
+								</Button>
+
+								<Button className="love-btn love-btn-main" onClick={handlePlayPause}>
+									{isPlaying ? <CiPause1 size={28} /> : <CiPlay1 size={28} />}
+								</Button>
+
+								<Button className="love-btn love-btn-side" onClick={handleNextTrack}>
+									<FaForward size={20} />
+								</Button>
 							</Group>
-						</Stack>
 
-						<Group gap="xl" mt="sm">
-							<Button className="love-btn love-btn-side" onClick={handlePrevTrack}>
-								<MdOutlineFastRewind size={20} />
-							</Button>
-
-							<Button className="love-btn love-btn-main" onClick={handlePlayPause}>
-								{isPlaying ? <CiPause1 size={28} /> : <CiPlay1 size={28} />}
-							</Button>
-
-							<Button className="love-btn love-btn-side" onClick={handleNextTrack}>
-								<FaForward size={20} />
-							</Button>
-						</Group>
-
-						<audio ref={audioRef} onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata} />
-					</Flex>
-				</CardSection>
-			</Card>
-		</Flex>
+							<audio ref={audioRef} onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata} />
+						</Flex>
+					</CardSection>
+				</Card>
+			</Flex>
+		</>
 	);
 };
 
