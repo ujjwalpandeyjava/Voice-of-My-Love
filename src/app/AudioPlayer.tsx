@@ -83,9 +83,8 @@ const AudioPlayer = () => {
 			audioRef.current.currentTime = 0;
 			setCurrentTime(0);
 			setProgress(0);
-			if (isPlaying) {
+			if (isPlaying)
 				audioRef.current.play();
-			}
 		}
 	};
 
@@ -122,22 +121,9 @@ const AudioPlayer = () => {
 			const nextX = 100 + Math.cos(nextAngle) * radius;
 			const nextY = 100 + Math.sin(nextAngle) * radius;
 
-			return (
-				<path key={i} className={`wave-circle ${i <= activeCount ? 'active' : ''}`}
-					d={`M ${x} ${y} A ${radius} ${radius} 0 0 1 ${nextX} ${nextY}`} />
-			);
+			return (<path key={i} className={`wave-circle ${i <= activeCount ? 'active' : ''}`} d={`M ${x} ${y} A ${radius} ${radius} 0 0 1 ${nextX} ${nextY}`} />);
 		});
 	};
-
-	if (tracks.length === 0) {
-		return (
-			<Flex align="center" justify="center" h="100vh">
-				<Text c="white">No music...</Text>
-			</Flex>
-		);
-	}
-
-
 
 
 	// Don't render player UI if tracks have not yet loaded
@@ -153,32 +139,12 @@ const AudioPlayer = () => {
 		<>
 
 			{/* The Modal for Full Screen Viewing */}
-			<Modal
-				opened={opened}
-				onClose={close}
-				withCloseButton={false}
-				centered
-				size="auto"
-				overlayProps={{
-					backgroundOpacity: 0.55,
-					blur: 15, /* Heavy blur to match the romantic glass theme */
-				}}
-				styles={{
-					content: { backgroundColor: 'transparent', boxShadow: 'none' }
-				}}
-			>
-				{tracks[currentTrackIndex].thumbnail ? (
-					<Image
-						src={tracks[currentTrackIndex].thumbnail}
-						alt="Full Screen Cover"
-						radius="xl"
-						style={{ maxHeight: '85vh', maxWidth: '90vw', objectFit: 'contain', boxShadow: '0 0 50px rgba(255, 107, 157, 0.5)' }}
-					/>
-				) : (
-					<Center>
-						<IoMdMusicalNotes size="15em" color="white" style={{ filter: 'drop-shadow(0 0 20px rgba(255,107,157,0.8))' }} />
-					</Center>
-				)}
+			<Modal opened={opened} onClose={close} withCloseButton={false}
+				centered size="auto" overlayProps={{ backgroundOpacity: 0.55, blur: 15 }}
+				styles={{ content: { backgroundColor: 'transparent', boxShadow: 'none' } }}>
+				{tracks[currentTrackIndex].thumbnail ?
+					<Image src={tracks[currentTrackIndex].thumbnail} alt="Full Screen Cover" radius="xl" style={{ maxHeight: '85vh', maxWidth: '90vw', objectFit: 'contain', boxShadow: '0 0 50px rgba(255, 107, 157, 0.5)' }} /> :
+					<Center><IoMdMusicalNotes size="15em" color="white" style={{ filter: 'drop-shadow(0 0 20px rgba(255,107,157,0.8))' }} /></Center>}
 			</Modal>
 			<Flex direction="column" align="center" justify="center" h="100vh" w="100%">
 				<Card className="love-card" p="xl">
@@ -198,7 +164,8 @@ const AudioPlayer = () => {
 								</svg>
 							</div>
 
-							<Title order={1} className="love-title" mb="sm">LOVE MESSAGE</Title>
+							<Title order={1} className="love-title" mb="0">LOVE MESSAGE</Title>
+							<Text fs="italics" size="xs" c="wheat" mb="sm" mt="-14">{currentTrackIndex + 1}/{trackList.length} songs</Text>
 
 							{/* NEW: Circular Waveform & Center Image */}
 							<div className="waveform-container">
