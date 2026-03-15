@@ -37,6 +37,83 @@ body {
 	align-items: stretch;
 }
 
+.uploadBtn {
+	/* Positioning */
+	position: fixed;
+	bottom: 24px;
+	right: 24px;
+	z-index: 1000;
+
+	/* Layout & Alignment */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 12px 24px;
+
+	/* Typography */
+	font-weight: 600;
+	color: white;
+	text-decoration: none;
+
+	/* Love Theme: Glassmorphism & Glow */
+	background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+	backdrop-filter: blur(15px) saturate(180%);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	border-radius: 50px;
+	box-shadow:
+		0 10px 30px rgba(0, 0, 0, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.2),
+		0 0 20px rgba(255, 107, 157, 0.3);
+
+	/* Animation */
+	transition: all 0.3s ease;
+}
+
+.uploadBtn:hover {
+	transform: translateY(-4px);
+	background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+	box-shadow:
+		0 15px 40px rgba(0, 0, 0, 0.4),
+		inset 0 1px 0 rgba(255, 255, 255, 0.3),
+		0 0 40px rgba(255, 107, 157, 0.6);
+}
+
+.backBtn {
+	/* Love Theme: Glassmorphism */
+	background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)) !important;
+	backdrop-filter: blur(15px) saturate(180%) !important;
+	border: 1px solid rgba(255, 255, 255, 0.3) !important;
+	border-radius: 50px !important;
+	/* Pill shape */
+
+	/* Typography & Color */
+	color: white !important;
+	font-weight: 500 !important;
+
+	/* Subtle Glow */
+	box-shadow:
+		0 8px 20px rgba(0, 0, 0, 0.2),
+		inset 0 1px 0 rgba(255, 255, 255, 0.2),
+		0 0 15px rgba(255, 107, 157, 0.2) !important;
+
+	transition: all 0.3s ease !important;
+}
+
+.backBtn:hover {
+	/* Slides slightly to the left to emphasize "going back" */
+	transform: translateX(-5px);
+
+	/* Brightens on hover */
+	background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08)) !important;
+	border-color: rgba(255, 255, 255, 0.5) !important;
+
+	/* Intensifies Glow */
+	box-shadow:
+		0 12px 25px rgba(0, 0, 0, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.3),
+		0 0 30px rgba(255, 107, 157, 0.5) !important;
+}
 
 /* Player */
 .love-card {
@@ -220,25 +297,11 @@ body {
 	animation: centerPulse 2s ease-in-out infinite;
 }
 
-.center-image-container.playing {
-	animation: centerPulse 1s ease-in-out infinite;
-}
-
 .center-image-inner {
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
 	overflow: hidden;
-}
-
-.thumbnailImg {
-	animation: spinSlowN 2s ease-in-out infinite;
-	animation: spinSlowN 15s linear infinite;
-
-}
-
-.center-image-container.playing .center-image-inner {
-	animation: spinSlow 15s linear infinite;
 }
 
 @keyframes centerPulse {
@@ -253,25 +316,4 @@ body {
 		transform: scale(1.05);
 		box-shadow: 0 0 40px rgba(255, 107, 157, 0.8);
 	}
-}
-
-@keyframes spinSlow {
-	0% {
-		transform: rotate(0deg);
-	}
-
-	100% {
-		transform: rotate(360deg);
-	}
-}
-
-@keyframes spinSlowN {
-	0% {
-		transform: rotate(360deg);
-	}
-
-	100% {
-		transform: rotate(0deg);
-	}
-
 }

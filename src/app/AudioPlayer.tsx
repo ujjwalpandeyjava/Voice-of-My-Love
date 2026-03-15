@@ -119,11 +119,8 @@ const AudioPlayer = () => {
 			const nextY = 100 + Math.sin(nextAngle) * radius;
 
 			return (
-				<path
-					key={i}
-					className={`wave-circle ${i <= activeCount ? 'active' : ''}`}
-					d={`M ${x} ${y} A ${radius} ${radius} 0 0 1 ${nextX} ${nextY}`}
-				/>
+				<path key={i} className={`wave-circle ${i <= activeCount ? 'active' : ''}`}
+					d={`M ${x} ${y} A ${radius} ${radius} 0 0 1 ${nextX} ${nextY}`} />
 			);
 		});
 	};
@@ -178,15 +175,13 @@ const AudioPlayer = () => {
 										<stop offset="100%" style={{ stopColor: "#ff1744", stopOpacity: 1 }} />
 									</linearGradient>
 								</defs>
-								<g id="waveCircles">
-									{renderWaveform()}
-								</g>
+								<g id="waveCircles">{renderWaveform()}</g>
 							</svg>
 
 							{/* The Album Image inside the waveform */}
-							<div className={`center-image-container ${isPlaying ? 'playing' : ''}`}>
+							<div className="center-image-container">
 								<div className="center-image-inner">
-									{tracks[currentTrackIndex].thumbnail ? <Image src={tracks[currentTrackIndex].thumbnail} alt="Album Cover" w={150} h={150} fit="cover" className="thumbnailImg"/> :
+									{tracks[currentTrackIndex].thumbnail ? <Image src={tracks[currentTrackIndex].thumbnail} alt="Album Cover" w={150} h={150} fit="cover" /> :
 										<Center w={150} h={150} bg="rgba(255,255,255,0.1)"><IoMdMusicalNotes size="3em" color="white" /></Center>}
 								</div>
 							</div>
@@ -194,7 +189,7 @@ const AudioPlayer = () => {
 
 						<Stack gap={2} align="center">
 							<Title order={2} size="h3" c="white" fw={400}>{tracks[currentTrackIndex]?.title.replace(/-\d+$/, "") || "Audio Title"}</Title>
-							<Text c="rgba(255,255,255,0.7)" size="sm" fs="italic">From My Heart to Yours</Text>
+							<Text c="rgba(255,255,255,0.7)" size="md" fs="italic">From My Heart to Yours</Text>
 						</Stack>
 
 						<Stack gap={2} w="100%">

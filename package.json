@@ -3,16 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "startProd": "npm run start",
-    "s": "npm run dev",
     "i": "npm install",
+    "dev": "next dev",
+    "dev:turbopack": "next dev --turbopack",
+    "devt": "next dev --turbopack -p 3101 ",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "start:port": "next start -p 3101",
+    "lint": "next lint",
+    "export": "next export",
+    "clean": "rimraf .next node_modules"
   },
   "dependencies": {
     "@mantine/core": "^8.3.17",
+    "@mantine/form": "^8.3.17",
     "@mantine/hooks": "^8.3.17",
     "@mantine/next": "^6.0.22",
     "next": "^16.1.6",

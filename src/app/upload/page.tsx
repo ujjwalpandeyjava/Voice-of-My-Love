@@ -1,53 +1,68 @@
 "use client";
 
-
-import { FileInput, Button, Stack, Text } from "@mantine/core";
+import { FileInput, Button, Stack, Text, TextInput, Textarea } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { useState } from "react";
 import { TbMusicShare } from "react-icons/tb";
 import { MdOutlineImage } from "react-icons/md";
 
-
-
 export default function UploadPage() {
-  const [file, setFile] = useState<File | null>(null);
-  const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [message, setMessage] = useState("");
   const [uploading, setUploading] = useState(false);
 
-  const handleUpload = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setMessage("");
+  // Initialize Mantine Form
+  const form = useForm({
+    initialValues: {
+      title: "",
+      description: "",
+      file: null as File | null,
+      thumbnail: null as File | null,
+    },
+    validate: {
+      title: (value) => (value.trim().length === 0 ? "Title is required" : null),
+      file: (value) => (!value ? "Music file is required" : null),
+      thumbnail: (value) => (!value ? "Thumbnail is required" : null),
+    },
+  });
 
-    if (!file) {
-      setMessage("Please select a music file.");
-      return;
-    }
-    if (!thumbnail) {
-      setMessage("Please select a thumbnail image."); ``
-      return;
-    }
+  const handleUpload = async (values: typeof form.values) => {
+    setMessage("");
     setUploading(true);
 
     const formData = new FormData();
-    formData.append("file", file);
-    formData.append("thumbnail", thumbnail);
+    formData.append("title", values.title);
+    formData.append("description", values.description);
+    // TypeScript knows these are Files because of our validation
+    formData.append("file", values.file as File);
+    formData.append("thumbnail", values.thumbnail as File);
 
-    const res = await fetch("/api/upload", { method: "POST", body: formData });
-    const result = await res.json();
-    setUploading(false);
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const result = await res.json();
 
-    if (res.ok)
-      setMessage(`✅ Uploaded:\n-music: /uploads/${result.fileName}\n-thumbnail: /uploads/${result.thumbnailName}`);
-    else
-      setMessage(result.error || "Upload failed");
+      if (res.ok) {
+        setMessage(`✅ Uploaded:\n-music: /uploads/${result.fileName}\n-thumbnail: /uploads/${result.thumbnailName}`);
+        form.reset(); // Clear the form on success
+      } else {
+        setMessage(result.error || "Upload failed");
+      }
+    } catch (error) {
+      setMessage("An error occurred during upload.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleUpload}>
+    <form onSubmit={form.onSubmit(handleUpload)}>
       <Stack>
-        <FileInput leftSection={<TbMusicShare />} placeholder="Pick music file" label="Upload your music file" accept="audio/*" value={file} onChange={setFile} clearable disabled={uploading} />
-        <FileInput leftSection={<MdOutlineImage />} placeholder="Pick thumbnail image" label="Upload a thumbnail image" accept="image/*" value={thumbnail} onChange={setThumbnail} clearable disabled={uploading} />
+        <TextInput label="Track Title" placeholder="Enter the title of the music" disabled={uploading} withAsterisk  {...form.getInputProps("title")} />
+        <Textarea label="Description" placeholder="Enter a short description or love message" disabled={uploading}  {...form.getInputProps("description")} />
+        <FileInput leftSection={<TbMusicShare />} placeholder="Pick music file" label="Upload your music file" accept="audio/*" clearable disabled={uploading} withAsterisk  {...form.getInputProps("file")} />
+        <FileInput leftSection={<MdOutlineImage />} placeholder="Pick thumbnail image" label="Upload a thumbnail image" accept="image/*" clearable disabled={uploading} withAsterisk  {...form.getInputProps("thumbnail")} />
+
         <Button type="submit" loading={uploading}>Upload</Button>
+
         {message && <Text c={message.startsWith("✅") ? "green" : "red"} style={{ whiteSpace: "pre-line" }}>{message}</Text>}
       </Stack>
     </form>
