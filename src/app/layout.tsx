@@ -6,7 +6,8 @@ import type { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-  title: "Voice of My Love 💝"
+  title: "Voice of My Love 💝",
+  themeColor: '#8b0a50'
 };
 
 

@@ -57,32 +57,32 @@ export const trackList: Track[] = [
 		title: "Sanjali from: 2025-06-23 at 19.05"
 	},
 	{
-		musicFile: "./assets/Audio 2025-07-23 at 13.01.12_2d08f2051",
+		musicFile: "./assets/Audio 2025-07-23 at 13.01.12_2d08f2051.mp3",
 		thumbnail: "./assets/tn/img011.jpg",
 		title: "Sanjali from: 2025-07-23 at 13.01"
 	},
 	{
-		musicFile: "./assets/Audio 2025-08-14 at 21.57.12_2d08f205",
+		musicFile: "./assets/Audio 2025-08-14 at 21.57.12_2d08f205.mp3",
 		thumbnail: "./assets/tn/img012.jpg",
 		title: "Sanjali from: 2025-08-14 at 21.57"
 	},
 	{
-		musicFile: "./assets/Audio 2025-08-16 at 13.30.37_05f5f89c",
+		musicFile: "./assets/Audio 2025-08-16 at 13.30.37_05f5f89c.mp3",
 		thumbnail: "./assets/tn/img013.jpg",
 		title: "Sanjali from: 2025-08-16 at 13.30"
 	},
 	{
-		musicFile: "./assets/Audio 2025-08-18 at 22.31.09_6397f03a",
+		musicFile: "./assets/Audio 2025-08-18 at 22.31.09_6397f03a.mp3",
 		thumbnail: "./assets/tn/img014.jpg",
 		title: "Sanjali from: 2025-08-18 at 22.31"
 	},
 	{
-		musicFile: "./assets/Audio 2025-08-20 at 20.49.59_40a8a9cf",
+		musicFile: "./assets/Audio 2025-08-20 at 20.49.59_40a8a9cf.mp3",
 		thumbnail: "./assets/tn/img015.jpg",
 		title: "Sanjali from: 2025-08-20 at 20.49"
 	},
 	{
-		musicFile: "./assets/Audio 2025-08-28 at 22.04.04_4e269b01",
+		musicFile: "./assets/Audio 2025-08-28 at 22.04.04_4e269b01.mp3",
 		thumbnail: "./assets/tn/img016.jpg",
 		title: "Sanjali from: 2025-08-28 at 22.04"
 	}
