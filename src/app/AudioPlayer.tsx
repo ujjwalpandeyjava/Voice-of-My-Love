@@ -218,7 +218,7 @@ const AudioPlayer = () => {
 								</Button>
 							</Group>
 
-							<audio ref={audioRef} onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata} />
+							<audio ref={audioRef} onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata} onEnded={handleNextTrack} />
 						</Flex>
 					</CardSection>
 				</Card>
