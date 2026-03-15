@@ -1,8 +1,10 @@
+"use client";
+
 import { Paper, Container, Title, Group, Button } from '@mantine/core';
 import { TiArrowBackOutline } from "react-icons/ti";
 import Link from "next/link";
 
-
+``
 
 export default function UloadLayout({ children }: { children: React.ReactNode }) {
 	return (

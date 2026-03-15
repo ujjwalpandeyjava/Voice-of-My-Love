@@ -1,4 +1,6 @@
 "use client";
+
+
 import { FileInput, Button, Stack, Text } from "@mantine/core";
 import { useState } from "react";
 import { TbMusicShare } from "react-icons/tb";
@@ -6,7 +8,7 @@ import { MdOutlineImage } from "react-icons/md";
 
 
 
-export default function UloadPage() {
+export default function UploadPage() {
   const [file, setFile] = useState<File | null>(null);
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [message, setMessage] = useState("");
@@ -21,7 +23,7 @@ export default function UloadPage() {
       return;
     }
     if (!thumbnail) {
-      setMessage("Please select a thumbnail image.");
+      setMessage("Please select a thumbnail image."); ``
       return;
     }
     setUploading(true);
