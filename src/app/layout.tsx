@@ -1,13 +1,12 @@
+import "@/style/globals.css";
 import { MantineProvider, mantineHtmlProps } from '@mantine/core';
-import type { Metadata } from "next";
 import '@mantine/core/styles.css';
-import "./globals.css";
+import type { Metadata } from "next";
 
 
 
 export const metadata: Metadata = {
-  title: "U❤️S",
-  description: "Private music player app",
+  title: "Voice of My Love 💝"
 };
 
 
