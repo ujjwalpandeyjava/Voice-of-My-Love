@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Voice Message</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 20% 50%, #ff6b9d 0%, #c23866 25%, #8b0a50 50%, #4a0a2e 100%);
+            overflow: hidden;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        /* Animated particle background */
+        .particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 100vh) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(var(--tx), -100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Glowing hearts background */
+        .bg-hearts {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .glow-heart {
+            position: absolute;
+            filter: blur(2px);
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+
+        @keyframes glowPulse {
+
+            0%,
+            100% {
+                opacity: 0.2;
+                transform: scale(1) rotate(0deg);
+                filter: blur(2px) brightness(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(1.2) rotate(10deg);
+                filter: blur(3px) brightness(1.5);
+            }
+        }
+
+        /* Main player */
+        .player-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 380px;
+        }
+
+        .player-card {
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 35px;
+            box-shadow:
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 0 100px rgba(255, 107, 157, 0.2);
+            padding: 2rem 1.8rem;
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+        }
+
+        .player-card:hover {
+            transform: translateY(-10px) rotateX(2deg);
+            box-shadow:
+                0 40px 80px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                0 0 150px rgba(255, 107, 157, 0.4);
+        }
+
+        /* Header with animated heart */
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        /* Spotlight effect behind heart */
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: spotlight 3s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes spotlight {
+
+            0%,
+            100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translateX(-50%) scale(1.3);
+                opacity: 1;
+            }
+        }
+
+        .heart-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 1rem;
+            position: relative;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            filter: drop-shadow(0 0 40px rgba(255, 107, 157, 1)) drop-shadow(0 0 80px rgba(255, 23, 68, 1)) drop-shadow(0 0 120px rgba(255, 107, 157, 0.8));
+            z-index: 1;
+        }
+
+        @keyframes heartbeat {
+
+            0%,
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 40px rgba(255, 107, 157, 1)) drop-shadow(0 0 80px rgba(255, 23, 68, 1)) drop-shadow(0 0 120px rgba(255, 107, 157, 0.8));
+            }
+
+            10% {
+                transform: scale(1.2);
+                filter: drop-shadow(0 0 60px rgba(255, 107, 157, 1)) drop-shadow(0 0 120px rgba(255, 23, 68, 1)) drop-shadow(0 0 180px rgba(255, 107, 157, 1));
+            }
+
+            20% {
+                transform: scale(1);
+            }
+
+            30% {
+                transform: scale(1.25);
+                filter: drop-shadow(0 0 70px rgba(255, 107, 157, 1)) drop-shadow(0 0 140px rgba(255, 23, 68, 1)) drop-shadow(0 0 200px rgba(255, 107, 157, 1));
+            }
+
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        .heart-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .heart-icon .heart-gradient {
+            fill: url(#heartGradient);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #fff;
+            text-shadow:
+                0 2px 20px rgba(255, 107, 157, 0.8),
+                0 0 40px rgba(255, 107, 157, 0.6);
+            margin-bottom: 0.3rem;
+            letter-spacing: 3px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Unique circular waveform */
+        .waveform-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 1.8rem;
+        }
+
+        .circular-waveform {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+            animation: rotateWave 20s linear infinite;
+        }
+
+        @keyframes rotateWave {
+            0% {
+                transform: rotate(-90deg);
+            }
+
+            100% {
+                transform: rotate(270deg);
+            }
+        }
+
+        .wave-circle {
+            fill: none;
+            stroke: rgba(255, 107, 157, 0.3);
+            stroke-width: 3;
+            transition: all 0.3s ease;
+        }
+
+        .wave-circle.active {
+            stroke: url(#waveGradient);
+            stroke-width: 4;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.8));
+            animation: pulseStroke 1s ease-in-out infinite;
+        }
+
+        @keyframes pulseStroke {
+
+            0%,
+            100% {
+                stroke-width: 4;
+            }
+
+            50% {
+                stroke-width: 6;
+            }
+        }
+
+        /* Center play indicator */
+        .center-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, rgba(255, 107, 157, 0.2), rgba(255, 23, 68, 0.2));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: centerPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes centerPulse {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 20px rgba(255, 107, 157, 0.4);
+            }
+
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+                box-shadow: 0 0 40px rgba(255, 107, 157, 0.8);
+            }
+        }
+
+        .center-indicator.playing {
+            animation: centerPulse 1s ease-in-out infinite, spinSlow 10s linear infinite;
+        }
+
+        @keyframes spinSlow {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .sound-waves {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+        }
+
+        .sound-bar {
+            width: 3px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 2px;
+            animation: soundWave 0.8s ease-in-out infinite;
+        }
+
+        .sound-bar:nth-child(1) {
+            height: 30%;
+            animation-delay: 0s;
+        }
+
+        .sound-bar:nth-child(2) {
+            height: 50%;
+            animation-delay: 0.1s;
+        }
+
+        .sound-bar:nth-child(3) {
+            height: 40%;
+            animation-delay: 0.2s;
+        }
+
+        .sound-bar:nth-child(4) {
+            height: 60%;
+            animation-delay: 0.3s;
+        }
+
+        .sound-bar:nth-child(5) {
+            height: 35%;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes soundWave {
+
+            0%,
+            100% {
+                transform: scaleY(1);
+            }
+
+            50% {
+                transform: scaleY(1.5);
+            }
+        }
+
+        /* Progress bar */
+        .progress-container {
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            cursor: grab;
+            position: relative;
+            overflow: visible;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-bar:active {
+            cursor: grabbing;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #ff1744, #ff6b9d);
+            background-size: 200% 100%;
+            border-radius: 10px;
+            position: relative;
+            animation: shimmer 2s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        .progress-bar:hover .progress-thumb {
+            opacity: 1;
+        }
+
+        .progress-thumb {
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 107, 157, 0.8);
+            opacity: 1;
+            transition: transform 0.2s ease;
+            cursor: grab;
+        }
+
+        .progress-thumb:active {
+            cursor: grabbing;
+            transform: translateY(-50%) scale(1.3);
+        }
+
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .play-button {
+            width: 65px;
+            height: 65px;
+            background: linear-gradient(145deg, #ff6b9d, #ff1744);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow:
+                0 10px 30px rgba(255, 23, 68, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .play-button::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #ff6b9d, #ff1744);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .play-button:hover::before {
+            opacity: 0.6;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow:
+                0 15px 40px rgba(255, 23, 68, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .play-button:active {
+            transform: scale(0.95);
+        }
+
+        .play-button svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        /* Volume control */
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .volume-icon {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .volume-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .volume-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: rgba(255, 255, 255, 0.9);
+            filter: drop-shadow(0 0 5px rgba(255, 107, 157, 0.5));
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            position: relative;
+            cursor: grab;
+            overflow: visible;
+        }
+
+        .volume-slider:active {
+            cursor: grabbing;
+        }
+
+        .volume-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b9d, #ff1744);
+            border-radius: 10px;
+            position: relative;
+            pointer-events: none;
+        }
+
+        .volume-thumb {
+            position: absolute;
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(255, 107, 157, 0.8);
+            cursor: grab;
+            transition: transform 0.2s ease;
+        }
+
+        .volume-thumb:active {
+            cursor: grabbing;
+            transform: translateY(-50%) scale(1.3);
+        }
+
+        /* Message display */
+        .message-display {
+            text-align: center;
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .message-text {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.95rem;
+            font-style: italic;
+            line-height: 1.5;
+            transition: opacity 0.5s ease;
+        }
+
+        .message-text.fade-out {
+            opacity: 0;
+        }
+
+        .message-text.fade-in {
+            opacity: 1;
+        }
+
+        /* Bottom decoration */
+        .bottom-decoration {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .bottom-decoration svg {
+            width: 20px;
+            height: 20px;
+            fill: rgba(255, 255, 255, 0.5);
+            animation: floatUpDown 2s ease-in-out infinite;
+        }
+
+        .bottom-decoration svg:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .bottom-decoration svg:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .bottom-decoration svg:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes floatUpDown {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Glowing hearts background -->
+    <div class="bg-hearts" id="bgHearts"></div>
+
+    <!-- Main player -->
+    <div class="player-container">
+        <div class="player-card">
+            <!-- Header -->
+            <div class="header">
+                <div class="heart-icon">
+                    <svg viewBox="0 0 100 100">
+                        <defs>
+                            <linearGradient id="heartGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#ff1744;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff6b9d;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path class="heart-gradient"
+                            d="M50,85 C50,85 15,60 15,40 C15,25 25,15 35,15 C42,15 47,20 50,25 C53,20 58,15 65,15 C75,15 85,25 85,40 C85,60 50,85 50,85 Z" />
+                    </svg>
+                </div>
+                <h1>LOVE MESSAGE</h1>
+                <p class="subtitle">From My Heart to Yours</p>
+            </div>
+
+            <!-- Circular Waveform -->
+            <div class="waveform-container">
+                <svg class="circular-waveform" viewBox="0 0 200 200">
+                    <defs>
+                        <linearGradient id="waveGradient">
+                            <stop offset="0%" style="stop-color:#ff6b9d;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#ff1744;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <g id="waveCircles"></g>
+                </svg>
+                <div class="center-indicator" id="centerIndicator">
+                    <div class="sound-waves" id="soundWaves">
+                        <div class="sound-bar"></div>
+                        <div class="sound-bar"></div>
+                        <div class="sound-bar"></div>
+                        <div class="sound-bar"></div>
+                        <div class="sound-bar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill">
+                        <div class="progress-thumb"></div>
+                    </div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+                <button class="play-button" id="playButton">
+                    <svg id="playIcon" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+                        <rect x="6" y="4" width="4" height="16" />
+                        <rect x="14" y="4" width="4" height="16" />
+                    </svg>
+                </button>
+
+                <div class="volume-control">
+                    <div class="volume-icon" id="volumeIcon">
+                        <svg viewBox="0 0 24 24" id="volumeHighIcon">
+                            <path
+                                d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14" />
+                        </svg>
+                        <svg viewBox="0 0 24 24" id="volumeMuteIcon" style="display: none;">
+                            <path d="M11 5L6 9H2v6h4l5 4V5zM23 9l-6 6M17 9l6 6" />
+                        </svg>
+                    </div>
+                    <div class="volume-slider" id="volumeSlider">
+                        <div class="volume-fill" id="volumeFill">
+                            <div class="volume-thumb"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Message Display -->
+            <div class="message-display">
+                <p class="message-text" id="messageText">"Every moment with you is a treasure. Happy Valentine's Day, my
+                    love. 💕"</p>
+            </div>
+        </div>
+
+        <!-- Bottom decoration -->
+        <div class="bottom-decoration">
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+        </div>
+    </div>
+
+    <audio id="audio" src="/love-voice.mp3"></audio>
+
+    <script>
+        var audioSrc = 'love-voice.mp3';
+
+        var audio = document.getElementById('audio');
+        audio.src = audioSrc;
+
+        var playButton = document.getElementById('playButton');
+        var playIcon = document.getElementById('playIcon');
+        var pauseIcon = document.getElementById('pauseIcon');
+        var progressBar = document.getElementById('progressBar');
+        var progressFill = document.getElementById('progressFill');
+        var currentTimeEl = document.getElementById('currentTime');
+        var durationEl = document.getElementById('duration');
+        var volumeSlider = document.getElementById('volumeSlider');
+        var volumeFill = document.getElementById('volumeFill');
+        var volumeIcon = document.getElementById('volumeIcon');
+        var volumeHighIcon = document.getElementById('volumeHighIcon');
+        var volumeMuteIcon = document.getElementById('volumeMuteIcon');
+        var centerIndicator = document.getElementById('centerIndicator');
+        var soundWaves = document.getElementById('soundWaves');
+        var messageText = document.getElementById('messageText');
+
+        var isPlaying = false;
+        var currentVolume = 1;
+        var isDraggingProgress = false;
+        var isDraggingVolume = false;
+        var messageIndex = 0;
+        var messageInterval;
+
+        var loveMessages = [
+            '"Every moment with you is a treasure. Happy Valentine\'s Day, my love. 💕"',
+            '"Your voice is the sweetest melody to my heart. 🎵"',
+            '"In your words, I find my home. Forever and always. ❤️"',
+            '"You are my today and all of my tomorrows. 💖"',
+            '"Loving you is the best decision I ever made. 🌹"',
+            '"With you, every day feels like Valentine\'s Day. 💝"',
+            '"You make my heart skip a beat every single time. 💓"',
+            '"In a sea of people, my eyes will always search for you. 👀💕"'
+        ];
+
+        // Create circular waveform
+        var waveCircles = document.getElementById('waveCircles');
+        var circleCount = 16;
+        var radius = 90;
+
+        for (var i = 0; i < circleCount; i++) {
+            var angle = (i / circleCount) * Math.PI * 2;
+            var x = 100 + Math.cos(angle) * radius;
+            var y = 100 + Math.sin(angle) * radius;
+            var nextAngle = ((i + 1) / circleCount) * Math.PI * 2;
+            var nextX = 100 + Math.cos(nextAngle) * radius;
+            var nextY = 100 + Math.sin(nextAngle) * radius;
+
+            var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('class', 'wave-circle');
+            path.setAttribute('d', 'M ' + x + ' ' + y + ' A ' + radius + ' ' + radius + ' 0 0 1 ' + nextX + ' ' + nextY);
+            path.setAttribute('data-index', i);
+            waveCircles.appendChild(path);
+        }
+
+        var waveCircleElements = document.querySelectorAll('.wave-circle');
+
+        // Create particles
+        var particles = document.getElementById('particles');
+        for (var i = 0; i < 30; i++) {
+            var particle = document.createElement('div');
+            particle.className = 'particle';
+            var size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.background = 'rgba(255, 107, 157, ' + (Math.random() * 0.5 + 0.3) + ')';
+            particle.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particles.appendChild(particle);
+        }
+
+        // Create glowing hearts
+        var bgHearts = document.getElementById('bgHearts');
+        for (var i = 0; i < 6; i++) {
+            var heart = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            heart.classList.add('glow-heart');
+            heart.setAttribute('viewBox', '0 0 24 24');
+            var size = 60 + i * 15;
+            heart.style.width = size + 'px';
+            heart.style.height = size + 'px';
+            heart.style.top = Math.random() * 100 + '%';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = (i * 0.7) + 's';
+            heart.innerHTML = '<path fill="rgba(255, 107, 157, 0.3)" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>';
+            bgHearts.appendChild(heart);
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            var mins = Math.floor(seconds / 60);
+            var secs = Math.floor(seconds % 60);
+            return mins + ':' + secs.toString().padStart(2, '0');
+        }
+
+        function changeMessage() {
+            messageText.classList.add('fade-out');
+            setTimeout(function () {
+                messageIndex = (messageIndex + 1) % loveMessages.length;
+                messageText.textContent = loveMessages[messageIndex];
+                messageText.classList.remove('fade-out');
+                messageText.classList.add('fade-in');
+            }, 500);
+        }
+
+        // Play/Pause
+        playButton.addEventListener('click', function () {
+            if (isPlaying) {
+                audio.pause();
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                centerIndicator.classList.remove('playing');
+                soundWaves.style.display = 'none';
+                clearInterval(messageInterval);
+            } else {
+                audio.play();
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                centerIndicator.classList.add('playing');
+                soundWaves.style.display = 'flex';
+                messageInterval = setInterval(changeMessage, 5000);
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Update progress and waveform
+        audio.addEventListener('timeupdate', function () {
+            var progress = (audio.currentTime / audio.duration) * 100;
+            progressFill.style.width = progress + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+
+            // Animate circular waveform
+            var activeCount = Math.floor((progress / 100) * circleCount);
+            waveCircleElements.forEach(function (circle, i) {
+                if (i <= activeCount) {
+                    circle.classList.add('active');
+                } else {
+                    circle.classList.remove('active');
+                }
+            });
+        });
+
+        audio.addEventListener('loadedmetadata', function () {
+            durationEl.textContent = formatTime(audio.duration);
+        });
+
+        audio.addEventListener('ended', function () {
+            isPlaying = false;
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+            centerIndicator.classList.remove('playing');
+            soundWaves.style.display = 'none';
+            clearInterval(messageInterval);
+        });
+
+        // Progress bar seek and drag
+        var progressBarRect;
+
+        function updateProgress(e) {
+            if (!progressBarRect) {
+                progressBarRect = progressBar.getBoundingClientRect();
+            }
+            var x = e.clientX - progressBarRect.left;
+            var percentage = Math.max(0, Math.min(1, x / progressBarRect.width));
+            audio.currentTime = percentage * audio.duration;
+        }
+
+        progressBar.addEventListener('mousedown', function (e) {
+            isDraggingProgress = true;
+            progressBarRect = progressBar.getBoundingClientRect();
+            updateProgress(e);
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', function (e) {
+            if (isDraggingProgress) {
+                updateProgress(e);
+            }
+        });
+
+        document.addEventListener('mouseup', function () {
+            if (isDraggingProgress) {
+                isDraggingProgress = false;
+                progressBarRect = null;
+            }
+        });
+
+        // Volume control with drag
+        var volumeSliderRect;
+
+        function updateVolume(volume) {
+            audio.volume = volume;
+            currentVolume = volume;
+            volumeFill.style.width = (volume * 100) + '%';
+
+            if (volume === 0) {
+                volumeHighIcon.style.display = 'none';
+                volumeMuteIcon.style.display = 'block';
+            } else {
+                volumeHighIcon.style.display = 'block';
+                volumeMuteIcon.style.display = 'none';
+            }
+        }
+
+        function handleVolumeChange(e) {
+            if (!volumeSliderRect) {
+                volumeSliderRect = volumeSlider.getBoundingClientRect();
+            }
+            var x = e.clientX - volumeSliderRect.left;
+            var percentage = Math.max(0, Math.min(1, sx / volumeSliderRect.width));
+            updateVolume(percentage);
+        }
+
+        volumeSlider.addEventListener('mousedown', function (e) {
+            isDraggingVolume = true;
+            volumeSliderRect = volumeSlider.getBoundingClientRect();
+            handleVolumeChange(e);
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', function (e) {
+            if (isDraggingVolume) {
+                handleVolumeChange(e);
+            }
+        });
+
+        document.addEventListener('mouseup', function () {
+            if (isDraggingVolume) {
+                isDraggingVolume = false;
+                volumeSliderRect = null;
+            }
+        });
+
+        volumeIcon.addEventListener('click', function () {
+            if (audio.volume > 0) {
+                updateVolume(0);
+            } else {
+                updateVolume(currentVolume || 0.5);
+            }
+        });
+
+        // Initialize volume
+        updateVolume(1);
+
+        // Hide sound waves initially
+        soundWaves.style.display = 'none';
+    </script>
+</body>
+
+</html>
