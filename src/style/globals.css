@@ -375,6 +375,11 @@ body {
 	transform: scale(0.95);
 }
 
+.love-card-section {
+	overflow: auto;
+	scrollbar-width: none;
+}
+
 /* Overlay Backdrop */
 .playlist-overlay {
 	position: fixed;

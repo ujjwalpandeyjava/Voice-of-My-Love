@@ -205,7 +205,7 @@ const AudioPlayer = () => {
 					<button className="playlist-toggle-btn" onClick={() => setIsPlaylistOpen(true)} title="Open playlist">
 						<MdQueueMusic size={22} />
 					</button>
-					<CardSection>
+					<CardSection className="love-card-section" p="0">
 						<Flex direction="column" align="center" gap="lg" p="lg">
 
 							<div className="heart-animation">
