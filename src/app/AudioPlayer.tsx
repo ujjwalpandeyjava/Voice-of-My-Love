@@ -182,7 +182,7 @@ const AudioPlayer = () => {
 						>
 							<div className="playlist-track-thumbnail">
 								{track.thumbnail ?
-									<img src={track.thumbnail} alt={track.title} /> :
+									<img src={track.thumbnail} alt={track.title} loading="lazy" width={44} height={44} /> :
 									<IoMdMusicalNotes size={18} color="rgba(255,255,255,0.5)" />
 								}
 							</div>
@@ -291,7 +291,7 @@ const AudioPlayer = () => {
 								</Button>
 							</Group>
 
-							<audio ref={audioRef} onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata} onEnded={handleNextTrack} />
+							<audio ref={audioRef} preload="none" onTimeUpdate={handleTimeUpdate} onLoadedMetadata={handleLoadedMetadata} onEnded={handleNextTrack} />
 						</Flex>
 					</CardSection>
 				</Card>
