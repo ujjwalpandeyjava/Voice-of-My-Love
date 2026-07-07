@@ -114,5 +114,47 @@ export const trackList: Track[] = [
 		musicFile: "./assets/Audio 2026-02-17 at 7.27.08 PM.mpeg",
 		thumbnail: "./assets/tn/img014.jpg",
 		title: "Sanjali from: 2026-02-17 at 7.27 2"
+	},
+	{
+		index: 19,
+		musicFile: "./assets/Audio 2025-12-28 at 7.46.00 PM-1783440672927.mpeg",
+		thumbnail: "./assets/tn/Audio 2025-12-28 at 7.46.00 PM-1783440672927tn.jpg",
+		title: "Audio 2025-12-28 at 7.46.00 PM"
+	},
+	{
+		index: 20,
+		musicFile: "./assets/Audio 2025-12-28 at 7.47.00 PM-1783440794497.mpeg",
+		thumbnail: "./assets/tn/Audio 2025-12-28 at 7.47.00 PM-1783440794497tn.jpg",
+		title: "Audio 2025-12-28 at 7.47.00 PM"
+	},
+	{
+		index: 21,
+		musicFile: "./assets/Audio 2026-02-17 at 7.26.00 PM-1783440879690.mpeg",
+		thumbnail: "./assets/tn/Audio 2026-02-17 at 7.26.00 PM-1783440879690tn.jpg",
+		title: "Audio 2026-02-17 at 7.26.00 PM"
+	},
+	{
+		index: 22,
+		musicFile: "./assets/Audio 2026-02-17 at 7.27.00 PM-1783440916217.mpeg",
+		thumbnail: "./assets/tn/Audio 2026-02-17 at 7.27.00 PM-1783440916217tn.jpg",
+		title: "Audio 2026-02-17 at 7.27.00 PM"
+	},
+	{
+		index: 23,
+		musicFile: "./assets/Audio 2026-06-15 at 2.02.00 PM-1783440926234.mpeg",
+		thumbnail: "./assets/tn/Audio 2026-06-15 at 2.02.00 PM-1783440926234tn.jpg",
+		title: "Audio 2026-06-15 at 2.02.00 PM"
+	},
+	{
+		index: 24,
+		musicFile: "./assets/Audio 2026-06-25 at 1.45.00 AM-1783440944586.mpeg",
+		thumbnail: "./assets/tn/Audio 2026-06-25 at 1.45.00 AM-1783440944586tn.jpg",
+		title: "Audio 2026-06-25 at 1.45.00 AM"
 	}
+
+
+
+
+
+
 ]

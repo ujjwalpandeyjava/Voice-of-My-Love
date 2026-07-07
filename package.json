@@ -18,7 +18,6 @@
     "@mantine/core": "^8.3.17",
     "@mantine/form": "^8.3.17",
     "@mantine/hooks": "^8.3.17",
-    "@mantine/next": "^6.0.22",
     "next": "16.2.10",
     "react": "19.2.7",
     "react-dom": "19.2.7",

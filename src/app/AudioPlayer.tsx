@@ -7,7 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import { CiPause1, CiPlay1 } from "react-icons/ci";
 import { FaForward } from 'react-icons/fa';
 import { IoMdMusicalNotes } from "react-icons/io";
-import { MdOutlineFastRewind } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
+import { MdOutlineFastRewind, MdQueueMusic } from "react-icons/md";
 import { trackList } from './trackList';
 
 
@@ -22,6 +23,9 @@ const AudioPlayer = () => {
 
 	// Image in Full view
 	const [opened, { open, close }] = useDisclosure(false);
+
+	// Playlist drawer
+	const [isPlaylistOpen, setIsPlaylistOpen] = useState<boolean>(false);
 
 	useEffect(() => {
 		setTracks(trackList);
@@ -50,6 +54,13 @@ const AudioPlayer = () => {
 
 	const handleNextTrack = () => setCurrentTrackIndex((prevIndex) => (prevIndex + 1) % tracks.length);
 	const handlePrevTrack = () => setCurrentTrackIndex((prevIndex) => prevIndex === 0 ? tracks.length - 1 : prevIndex - 1);
+
+	// Handle track selection from playlist drawer
+	const handleTrackSelect = (index: number) => {
+		setCurrentTrackIndex(index);
+		setIsPlaying(true);
+		setIsPlaylistOpen(false);
+	};
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const handleSeek = (seconds: number) => {
 		const audio = audioRef.current;
@@ -148,8 +159,52 @@ const AudioPlayer = () => {
 					<Image src={tracks[currentTrackIndex].thumbnail} alt="Full Screen Cover" radius="xl" style={{ maxHeight: '85vh', maxWidth: '90vw', objectFit: 'contain', boxShadow: '0 0 50px rgba(255, 107, 157, 0.5)' }} /> :
 					<Center><IoMdMusicalNotes size="15em" color="white" style={{ filter: 'drop-shadow(0 0 20px rgba(255,107,157,0.8))' }} /></Center>}
 			</Modal>
+			{/* Playlist Drawer Overlay */}
+			<div
+				className={`playlist-overlay ${isPlaylistOpen ? 'open' : ''}`}
+				onClick={() => setIsPlaylistOpen(false)}
+			/>
+
+			{/* Playlist Drawer */}
+			<div className={`playlist-drawer ${isPlaylistOpen ? 'open' : ''}`}>
+				<div className="playlist-header">
+					<span className="playlist-header-title">♫ Playlist</span>
+					<button className="playlist-close-btn" onClick={() => setIsPlaylistOpen(false)}>
+						<IoClose size={18} />
+					</button>
+				</div>
+				<div className="playlist-tracks">
+					{tracks.map((track, idx) => (
+						<div
+							key={track.index}
+							className={`playlist-track ${idx === currentTrackIndex ? 'active' : ''}`}
+							onClick={() => handleTrackSelect(idx)}
+						>
+							<div className="playlist-track-thumbnail">
+								{track.thumbnail ?
+									<img src={track.thumbnail} alt={track.title} /> :
+									<IoMdMusicalNotes size={18} color="rgba(255,255,255,0.5)" />
+								}
+							</div>
+							<div className="playlist-track-info">
+								<span className="playlist-track-title">{track.title.replace(/-\d+$/, "")}</span>
+								<span className="playlist-track-index">Track {idx + 1}</span>
+							</div>
+							{idx === currentTrackIndex && isPlaying && <div className="now-playing-dot" />}
+						</div>
+					))}
+				</div>
+				<div className="playlist-footer">
+					<span className="playlist-footer-text">{tracks.length} tracks</span>
+				</div>
+			</div>
+
 			<Flex direction="column" align="center" justify="center" h="100vh" w="100%">
 				<Card className="love-card" p="xl">
+					{/* Playlist Toggle Button */}
+					<button className="playlist-toggle-btn" onClick={() => setIsPlaylistOpen(true)} title="Open playlist">
+						<MdQueueMusic size={22} />
+					</button>
 					<CardSection>
 						<Flex direction="column" align="center" gap="lg" p="lg">
 

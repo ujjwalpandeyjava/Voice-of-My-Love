@@ -47,8 +47,8 @@ body {
 
 .byUjjwal {
 	position: fixed;
-	bottom: 24px;
-	left: 24px;
+	top: 1em;
+	right: 1em;
 	z-index: 1000;
 	color: pink !important;
 	font-size: italic;
@@ -332,5 +332,754 @@ body {
 	50% {
 		transform: scale(1.05);
 		box-shadow: 0 0 40px rgba(255, 107, 157, 0.8);
+	}
+}
+
+/* ============================================
+   PLAYLIST DRAWER
+   ============================================ */
+
+/* Toggle Button */
+.playlist-toggle-btn {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	z-index: 10;
+	width: 44px;
+	height: 44px;
+	border-radius: 50%;
+	border: 1.5px solid rgba(255, 255, 255, 0.25);
+	background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+	backdrop-filter: blur(12px) saturate(160%);
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow:
+		0 4px 15px rgba(0, 0, 0, 0.2),
+		0 0 12px rgba(255, 107, 157, 0.15);
+}
+
+.playlist-toggle-btn:hover {
+	transform: scale(1.12);
+	border-color: rgba(255, 255, 255, 0.45);
+	background: linear-gradient(145deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.1));
+	box-shadow:
+		0 6px 20px rgba(0, 0, 0, 0.3),
+		0 0 25px rgba(255, 107, 157, 0.4);
+}
+
+.playlist-toggle-btn:active {
+	transform: scale(0.95);
+}
+
+/* Overlay Backdrop */
+.playlist-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 9998;
+	background: rgba(0, 0, 0, 0.55);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.35s ease;
+}
+
+.playlist-overlay.open {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+/* Drawer Panel */
+.playlist-drawer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	width: 340px;
+	max-width: 82vw;
+	height: 100vh;
+	height: 100dvh;
+	transform: translateX(-105%);
+	transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+
+	/* Glassmorphism */
+	background: linear-gradient(160deg,
+			rgba(255, 255, 255, 0.13) 0%,
+			rgba(255, 107, 157, 0.08) 40%,
+			rgba(139, 10, 80, 0.25) 100%);
+	backdrop-filter: blur(40px) saturate(200%);
+	-webkit-backdrop-filter: blur(40px) saturate(200%);
+	border-right: 1.5px solid rgba(255, 255, 255, 0.18);
+	box-shadow:
+		8px 0 40px rgba(0, 0, 0, 0.4),
+		0 0 80px rgba(255, 107, 157, 0.1);
+
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.playlist-drawer.open {
+	transform: translateX(0);
+}
+
+/* Drawer Header */
+.playlist-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 24px 20px 16px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	flex-shrink: 0;
+}
+
+.playlist-header-title {
+	font-size: 1.15rem;
+	font-weight: 600;
+	color: #fff;
+	letter-spacing: 1.5px;
+	text-shadow: 0 1px 12px rgba(255, 107, 157, 0.5);
+}
+
+.playlist-close-btn {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	background: rgba(255, 255, 255, 0.08);
+	color: rgba(255, 255, 255, 0.8);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.25s ease;
+	font-size: 1.1rem;
+}
+
+.playlist-close-btn:hover {
+	background: rgba(255, 23, 68, 0.3);
+	border-color: rgba(255, 107, 157, 0.5);
+	color: #fff;
+	transform: rotate(90deg);
+}
+
+/* Track List */
+.playlist-tracks {
+	flex: 1;
+	overflow-y: auto;
+	padding: 12px 0;
+}
+
+/* Custom Scrollbar */
+.playlist-tracks::-webkit-scrollbar {
+	width: 5px;
+}
+
+.playlist-tracks::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.playlist-tracks::-webkit-scrollbar-thumb {
+	background: rgba(255, 107, 157, 0.35);
+	border-radius: 10px;
+}
+
+.playlist-tracks::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 107, 157, 0.6);
+}
+
+/* Individual Track */
+.playlist-track {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	padding: 12px 20px;
+	cursor: pointer;
+	transition: all 0.25s ease;
+	position: relative;
+	border-left: 3px solid transparent;
+}
+
+.playlist-track:hover {
+	background: rgba(255, 255, 255, 0.08);
+	border-left-color: rgba(255, 107, 157, 0.5);
+}
+
+.playlist-track.active {
+	background: linear-gradient(90deg, rgba(255, 107, 157, 0.15), transparent);
+	border-left-color: var(--love-primary);
+}
+
+/* Track Thumbnail */
+.playlist-track-thumbnail {
+	width: 44px;
+	height: 44px;
+	min-width: 44px;
+	border-radius: 50%;
+	overflow: hidden;
+	border: 2px solid rgba(255, 255, 255, 0.15);
+	background: rgba(255, 255, 255, 0.05);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.25s ease;
+}
+
+.playlist-track:hover .playlist-track-thumbnail {
+	border-color: rgba(255, 107, 157, 0.5);
+	box-shadow: 0 0 12px rgba(255, 107, 157, 0.3);
+}
+
+.playlist-track.active .playlist-track-thumbnail {
+	border-color: var(--love-primary);
+	box-shadow: 0 0 18px rgba(255, 107, 157, 0.5);
+}
+
+.playlist-track-thumbnail img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Track Info */
+.playlist-track-info {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.playlist-track-title {
+	font-size: 0.88rem;
+	color: rgba(255, 255, 255, 0.85);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	transition: color 0.25s ease;
+}
+
+.playlist-track:hover .playlist-track-title {
+	color: #fff;
+}
+
+.playlist-track.active .playlist-track-title {
+	color: var(--love-primary);
+	font-weight: 600;
+	text-shadow: 0 0 10px rgba(255, 107, 157, 0.4);
+}
+
+.playlist-track-index {
+	font-size: 0.7rem;
+	color: rgba(255, 255, 255, 0.4);
+	letter-spacing: 0.5px;
+}
+
+.playlist-track.active .playlist-track-index {
+	color: rgba(255, 107, 157, 0.6);
+}
+
+/* Now Playing Dot */
+.now-playing-dot {
+	width: 8px;
+	height: 8px;
+	min-width: 8px;
+	border-radius: 50%;
+	background: var(--love-primary);
+	box-shadow: 0 0 10px rgba(255, 107, 157, 0.8);
+	animation: nowPlayingPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes nowPlayingPulse {
+
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+		box-shadow: 0 0 10px rgba(255, 107, 157, 0.8);
+	}
+
+	50% {
+		opacity: 0.5;
+		transform: scale(0.7);
+		box-shadow: 0 0 20px rgba(255, 107, 157, 1);
+	}
+}
+
+/* Drawer footer */
+.playlist-footer {
+	padding: 14px 20px;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	text-align: center;
+	flex-shrink: 0;
+}
+
+.playlist-footer-text {
+	font-size: 0.72rem;
+	color: rgba(255, 255, 255, 0.35);
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+/* Love card needs relative positioning for the toggle button */
+.love-card {
+	position: relative;
+}
+
+/* ============================================
+   UPLOAD PAGE — NEOMORPHISM
+   ============================================ */
+
+.upload-page {
+	position: relative;
+	inset: 0;
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: 24px 16px;
+	padding-top: calc(env(safe-area-inset-top) + 24px);
+	padding-bottom: calc(env(safe-area-inset-bottom) + 24px);
+}
+
+/* Back Button */
+.upload-back-btn {
+	position: fixed;
+	top: 20px;
+	left: 20px;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 10px 18px;
+	border-radius: 50px;
+	text-decoration: none;
+	font-weight: 500;
+	font-size: 0.9rem;
+	color: rgba(255, 255, 255, 0.8);
+
+	/* Neomorphism */
+	background: var(--love-bg-2);
+	box-shadow:
+		6px 6px 14px rgba(0, 0, 0, 0.4),
+		-6px -6px 14px rgba(255, 107, 157, 0.08);
+	transition: all 0.3s ease;
+}
+
+.upload-back-btn:hover {
+	transform: translateX(-3px);
+	color: #fff;
+	box-shadow:
+		8px 8px 18px rgba(0, 0, 0, 0.5),
+		-8px -8px 18px rgba(255, 107, 157, 0.12);
+}
+
+/* Main Upload Card */
+.upload-card {
+	width: 100%;
+	max-width: 440px;
+	padding: 36px 32px;
+	border-radius: 28px;
+
+	/* Neomorphism */
+	background: var(--love-bg-2);
+	box-shadow:
+		12px 12px 30px rgba(0, 0, 0, 0.5),
+		-12px -12px 30px rgba(255, 107, 157, 0.06),
+		inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Header */
+.upload-card-header {
+	text-align: center;
+	margin-bottom: 28px;
+}
+
+.upload-header-icon {
+	width: 60px;
+	height: 60px;
+	margin: 0 auto 14px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--love-primary);
+
+	/* Neomorphism inset */
+	background: var(--love-bg-2);
+	box-shadow:
+		inset 5px 5px 12px rgba(0, 0, 0, 0.4),
+		inset -5px -5px 12px rgba(255, 107, 157, 0.08),
+		0 0 20px rgba(255, 107, 157, 0.15);
+}
+
+.upload-card-title {
+	font-size: 1.4rem;
+	font-weight: 600;
+	color: #fff;
+	margin: 0 0 6px;
+	letter-spacing: 0.5px;
+	text-shadow: 0 1px 8px rgba(255, 107, 157, 0.3);
+}
+
+.upload-card-subtitle {
+	font-size: 0.82rem;
+	color: rgba(255, 255, 255, 0.45);
+	margin: 0;
+	font-style: italic;
+}
+
+/* Drag & Drop Zone */
+.upload-dropzone {
+	border: 2px dashed rgba(255, 255, 255, 0.15);
+	border-radius: 20px;
+	padding: 32px 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	margin-bottom: 8px;
+
+	/* Neomorphism inset */
+	background: var(--love-bg-2);
+	box-shadow:
+		inset 6px 6px 14px rgba(0, 0, 0, 0.35),
+		inset -6px -6px 14px rgba(255, 107, 157, 0.04);
+}
+
+.upload-dropzone:hover {
+	border-color: rgba(255, 107, 157, 0.4);
+	box-shadow:
+		inset 6px 6px 14px rgba(0, 0, 0, 0.35),
+		inset -6px -6px 14px rgba(255, 107, 157, 0.08),
+		0 0 15px rgba(255, 107, 157, 0.1);
+}
+
+.upload-dropzone.active {
+	border-color: var(--love-primary);
+	border-style: solid;
+	box-shadow:
+		inset 6px 6px 14px rgba(0, 0, 0, 0.35),
+		inset -6px -6px 14px rgba(255, 107, 157, 0.12),
+		0 0 25px rgba(255, 107, 157, 0.2);
+}
+
+.upload-dropzone.has-file {
+	border-color: rgba(255, 107, 157, 0.3);
+	border-style: solid;
+}
+
+.upload-dropzone-icon {
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: rgba(255, 255, 255, 0.4);
+	transition: all 0.3s ease;
+
+	/* Neomorphism raised */
+	background: var(--love-bg-2);
+	box-shadow:
+		5px 5px 12px rgba(0, 0, 0, 0.4),
+		-5px -5px 12px rgba(255, 107, 157, 0.06);
+}
+
+.upload-dropzone:hover .upload-dropzone-icon {
+	color: var(--love-primary);
+	box-shadow:
+		5px 5px 12px rgba(0, 0, 0, 0.4),
+		-5px -5px 12px rgba(255, 107, 157, 0.1),
+		0 0 12px rgba(255, 107, 157, 0.2);
+}
+
+.upload-dropzone-icon.selected {
+	color: var(--love-primary);
+	box-shadow:
+		5px 5px 12px rgba(0, 0, 0, 0.4),
+		-5px -5px 12px rgba(255, 107, 157, 0.1),
+		0 0 18px rgba(255, 107, 157, 0.25);
+}
+
+.upload-dropzone-text {
+	font-size: 0.9rem;
+	color: rgba(255, 255, 255, 0.6);
+	text-align: center;
+}
+
+.upload-dropzone-filename {
+	font-size: 0.85rem;
+	color: var(--love-primary);
+	font-weight: 500;
+	text-align: center;
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	text-shadow: 0 0 8px rgba(255, 107, 157, 0.3);
+}
+
+.upload-dropzone-hint {
+	font-size: 0.72rem;
+	color: rgba(255, 255, 255, 0.3);
+	font-style: italic;
+}
+
+/* Form Field */
+.upload-field {
+	margin-top: 20px;
+}
+
+.upload-label {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 0.82rem;
+	color: rgba(255, 255, 255, 0.6);
+	margin-bottom: 8px;
+	letter-spacing: 0.3px;
+}
+
+.upload-required {
+	color: var(--love-primary);
+	font-weight: 700;
+}
+
+.upload-optional {
+	font-size: 0.7rem;
+	color: rgba(255, 255, 255, 0.3);
+	font-style: italic;
+	margin-left: auto;
+}
+
+/* Neomorphic Input */
+.upload-input-wrapper {
+	border-radius: 14px;
+
+	/* Neomorphism inset */
+	background: var(--love-bg-2);
+	box-shadow:
+		inset 4px 4px 10px rgba(0, 0, 0, 0.35),
+		inset -4px -4px 10px rgba(255, 107, 157, 0.04);
+	transition: box-shadow 0.3s ease;
+}
+
+.upload-input-wrapper:focus-within {
+	box-shadow:
+		inset 4px 4px 10px rgba(0, 0, 0, 0.35),
+		inset -4px -4px 10px rgba(255, 107, 157, 0.08),
+		0 0 12px rgba(255, 107, 157, 0.15);
+}
+
+.upload-input {
+	width: 100%;
+	padding: 14px 18px;
+	border: none;
+	border-radius: 14px;
+	background: transparent;
+	color: #fff;
+	font-size: 0.9rem;
+	font-family: inherit;
+	outline: none;
+}
+
+.upload-input::placeholder {
+	color: rgba(255, 255, 255, 0.25);
+}
+
+.upload-input:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Thumbnail Picker */
+.upload-thumbnail-picker {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 14px 18px;
+	border-radius: 14px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+
+	/* Neomorphism inset */
+	background: var(--love-bg-2);
+	box-shadow:
+		inset 4px 4px 10px rgba(0, 0, 0, 0.35),
+		inset -4px -4px 10px rgba(255, 107, 157, 0.04);
+}
+
+.upload-thumbnail-picker:hover {
+	box-shadow:
+		inset 4px 4px 10px rgba(0, 0, 0, 0.35),
+		inset -4px -4px 10px rgba(255, 107, 157, 0.08),
+		0 0 12px rgba(255, 107, 157, 0.15);
+}
+
+.upload-thumbnail-icon {
+	color: rgba(255, 255, 255, 0.35);
+	flex-shrink: 0;
+	transition: color 0.3s ease;
+}
+
+.upload-thumbnail-picker:hover .upload-thumbnail-icon {
+	color: var(--love-primary);
+}
+
+.upload-thumbnail-picker.has-file .upload-thumbnail-icon {
+	color: var(--love-primary);
+}
+
+.upload-thumbnail-text {
+	font-size: 0.85rem;
+	color: rgba(255, 255, 255, 0.35);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.upload-thumbnail-picker.has-file .upload-thumbnail-text {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+/* Field Error */
+.upload-field-error {
+	display: block;
+	font-size: 0.75rem;
+	color: #ff6b6b;
+	margin-top: 6px;
+	padding-left: 4px;
+}
+
+/* Submit Button */
+.upload-submit-btn {
+	width: 100%;
+	margin-top: 28px;
+	padding: 16px 24px;
+	border: none;
+	border-radius: 16px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	font-size: 1rem;
+	font-weight: 600;
+	font-family: inherit;
+	color: #fff;
+	letter-spacing: 0.5px;
+	transition: all 0.3s ease;
+
+	/* Neomorphism raised + gradient */
+	background: linear-gradient(145deg, var(--love-primary), var(--love-secondary));
+	box-shadow:
+		6px 6px 16px rgba(0, 0, 0, 0.4),
+		-6px -6px 16px rgba(255, 107, 157, 0.08),
+		0 0 20px rgba(255, 107, 157, 0.2);
+}
+
+.upload-submit-btn:hover:not(:disabled) {
+	transform: translateY(-2px);
+	box-shadow:
+		8px 8px 20px rgba(0, 0, 0, 0.5),
+		-8px -8px 20px rgba(255, 107, 157, 0.1),
+		0 0 35px rgba(255, 107, 157, 0.35);
+}
+
+.upload-submit-btn:active:not(:disabled) {
+	transform: translateY(1px);
+	box-shadow:
+		inset 4px 4px 10px rgba(0, 0, 0, 0.3),
+		inset -4px -4px 10px rgba(255, 107, 157, 0.05);
+}
+
+.upload-submit-btn:disabled {
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+
+.upload-submit-btn.loading {
+	background: linear-gradient(145deg, rgba(255, 107, 157, 0.6), rgba(255, 23, 68, 0.6));
+}
+
+/* Spinner */
+.upload-spinner {
+	width: 20px;
+	height: 20px;
+	border: 2.5px solid rgba(255, 255, 255, 0.3);
+	border-top-color: #fff;
+	border-radius: 50%;
+	animation: uploadSpin 0.7s linear infinite;
+}
+
+@keyframes uploadSpin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Status Message */
+.upload-message {
+	margin-top: 20px;
+	padding: 16px 18px;
+	border-radius: 16px;
+	display: flex;
+	align-items: flex-start;
+	gap: 12px;
+	font-size: 0.82rem;
+	line-height: 1.5;
+	white-space: pre-line;
+
+	/* Neomorphism inset */
+	background: var(--love-bg-2);
+	box-shadow:
+		inset 4px 4px 10px rgba(0, 0, 0, 0.3),
+		inset -4px -4px 10px rgba(255, 107, 157, 0.04);
+}
+
+.upload-message.success {
+	color: #69db7c;
+	border-left: 3px solid #69db7c;
+}
+
+.upload-message.success svg {
+	flex-shrink: 0;
+	margin-top: 2px;
+	filter: drop-shadow(0 0 6px rgba(105, 219, 124, 0.5));
+}
+
+.upload-message.error {
+	color: #ff6b6b;
+	border-left: 3px solid #ff6b6b;
+}
+
+.upload-message.error svg {
+	flex-shrink: 0;
+	margin-top: 2px;
+	filter: drop-shadow(0 0 6px rgba(255, 107, 107, 0.5));
+}
+
+/* Responsive — mobile */
+@media (max-width: 480px) {
+	.upload-card {
+		padding: 28px 22px;
+		border-radius: 24px;
+	}
+
+	.upload-dropzone {
+		padding: 26px 16px;
+	}
+
+	.upload-back-btn {
+		top: 14px;
+		left: 14px;
+		padding: 8px 14px;
+		font-size: 0.82rem;
 	}
 }

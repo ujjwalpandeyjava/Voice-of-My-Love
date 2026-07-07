@@ -1,4 +1,4 @@
-import { Text, Button } from '@mantine/core';
+import { Text } from '@mantine/core';
 import Link from 'next/link';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import AudioPlayer from './AudioPlayer';
@@ -11,7 +11,9 @@ export default function Home() {
   return (
     <div className="home-page" >
       <AudioPlayer />
-      <Text className="byUjjwal"><b>Created by:</b> Ujjwal Pandey</Text>
+      <Text className="byUjjwal">
+        <b>Created by</b>: Ujjwal Pandey
+      </Text>
       {isDev && <Link href="/upload" className="uploadBtn">
         <FaCloudUploadAlt size={20} />
         <span>Upload More</span>
